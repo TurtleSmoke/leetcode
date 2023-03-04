@@ -1,0 +1,7 @@
+# Ignore mdBook build directory
+# Ignore idea configuration files
+.idea/*
+
+# Ignore python cache
+__pycache__
+
