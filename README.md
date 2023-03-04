@@ -1,4 +1,4 @@
-# [Leetcode](https://leetcode.com/) [![Lint](https://github.com/TurtleSmoke/leetcode/actions/workflows/lint.yml/badge.svg)](https://github.com/TurtleSmoke/leetcode/actions/workflows/lint.yml)
+# [Leetcode](https://leetcode.com/) [![Lint](https://github.com/TurtleSmoke/leetcode/actions/workflows/lint.yml/badge.svg?branch=main)](https://github.com/TurtleSmoke/leetcode/actions/workflows/lint.yml)
 
 This repository contains my solutions to the problems on [Leetcode](https://leetcode.com/problemset/all/).
 
