@@ -8,7 +8,9 @@ class ListNode:
 
 
 class Solution:
-    def addTwoNumbers(self, l1: Optional[ListNode], l2: Optional[ListNode]) -> Optional[ListNode]:
+    def addTwoNumbers(
+        self, l1: Optional[ListNode], l2: Optional[ListNode]
+    ) -> Optional[ListNode]:
         carry = 0
         head = ListNode()
         current = head
@@ -24,6 +26,7 @@ class Solution:
             carry //= 10
         return head.next
 
+
 def list_to_ListNode(l):
     head = ListNode()
     current = head
@@ -31,6 +34,7 @@ def list_to_ListNode(l):
         current.next = ListNode(i)
         current = current.next
     return head.next
+
 
 tests = [
     (
@@ -47,6 +51,7 @@ tests = [
     ),
 ]
 
+
 def validator(addTwoNumbers, inputs, expected):
     output = addTwoNumbers(*(list_to_ListNode(l) for l in inputs))
     expected = list_to_ListNode(expected)
@@ -55,4 +60,3 @@ def validator(addTwoNumbers, inputs, expected):
         output = output.next
         expected = expected.next
     assert not output and not expected
-
