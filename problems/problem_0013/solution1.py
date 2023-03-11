@@ -1,25 +1,35 @@
-from typing import List
-
-
 class Solution:
-    def longestCommonPrefix(self, strs: List[str]) -> str:
-        if not strs:
-            return ""
-        res = ""
-        for i in range(len(strs[0])):
-            if any(i >= len(s) or s[i] != strs[0][i] for s in strs[1:]):
-                return res
-            res += strs[0][i]
+    def romanToInt(self, s: str) -> int:
+        numerals = {"I": 1, "V": 5, "X": 10, "L": 50, "C": 100, "D": 500, "M": 1000}
+        res = numerals[s[-1]]
+        for i in range(len(s) - 1):
+            if numerals[s[i]] < numerals[s[i + 1]]:
+                res -= numerals[s[i]]
+            else:
+                res += numerals[s[i]]
+
         return res
 
 
 tests = [
     (
-        (["flower", "flow", "flight"],),
-        "fl",
+        ("III",),
+        3,
     ),
     (
-        (["dog", "racecar", "car"],),
-        "",
+        ("IV",),
+        4,
+    ),
+    (
+        ("IX",),
+        9,
+    ),
+    (
+        ("LVIII",),
+        58,
+    ),
+    (
+        ("MCMXCIV",),
+        1994,
     ),
 ]
