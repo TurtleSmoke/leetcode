@@ -105,11 +105,17 @@ def get_problem_expected(title_slug, data_input, question_id, typed_code):
         "x-csrftoken": session.cookies.get("csrftoken"),
     }
 
-    interpret_id = try_request_post(
+    result = try_request_post(
         url=INTERPRET_URL(title_slug),
         json=json,
         headers=headers,
-    )["interpret_id"]
+    )
+
+    if 'error' in result:
+        print(result['error'])
+        sys.exit(1)
+
+    interpret_id = result["interpret_id"]
 
     return try_get_expected(interpret_id)["expected_code_answer"]
 
@@ -171,12 +177,12 @@ def generate_problem(problem_number):
     )
 
     tests = (
-        "tests = [\n"
-        + "\n".join(
-            tests_template(input, expected)
-            for input, expected in zip(problem_info["input"], problem_info["expected"])
-        )
-        + "\n]"
+            "tests = [\n"
+            + "\n".join(
+        tests_template(input, expected)
+        for input, expected in zip(problem_info["input"], problem_info["expected"])
+    )
+            + "\n]"
     )
 
     problem_name = f"problem_{problem_number:04d}"
