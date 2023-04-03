@@ -5,6 +5,9 @@ class ListNode:
 
     @staticmethod
     def list_to_ListNode(l):
+        if not l:
+            return l
+
         head = ListNode()
         current = head
         for i in l:
@@ -14,6 +17,9 @@ class ListNode:
 
     @staticmethod
     def ListNode_to_list(head):
+        if not head:
+            return head
+
         l = []
         while head:
             l.append(head.val)
