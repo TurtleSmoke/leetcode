@@ -1,4 +1,4 @@
-# [Leetcode](https://leetcode.com/) [![Lint](https://github.com/TurtleSmoke/leetcode/actions/workflows/lint.yml/badge.svg?branch=main)](https://github.com/TurtleSmoke/leetcode/actions/workflows/lint.yml)
+# [Leetcode](https://leetcode.com/) [![Lint](https://github.com/TurtleSmoke/leetcode/actions/workflows/lint.yml/badge.svg?branch=main)](https://github.com/TurtleSmoke/leetcode/actions/workflows/lint.yml) [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
 
 This repository contains my solutions to the problems on [Leetcode](https://leetcode.com/problemset/all/).
 
