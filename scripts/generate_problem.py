@@ -111,8 +111,8 @@ def get_problem_expected(title_slug, data_input, question_id, typed_code):
         headers=headers,
     )
 
-    if 'error' in result:
-        print(result['error'])
+    if "error" in result:
+        print(result["error"])
         sys.exit(1)
 
     interpret_id = result["interpret_id"]
@@ -177,12 +177,12 @@ def generate_problem(problem_number):
     )
 
     tests = (
-            "tests = [\n"
-            + "\n".join(
-        tests_template(input, expected)
-        for input, expected in zip(problem_info["input"], problem_info["expected"])
-    )
-            + "\n]"
+        "tests = [\n"
+        + "\n".join(
+            tests_template(input, expected)
+            for input, expected in zip(problem_info["input"], problem_info["expected"])
+        )
+        + "\n]"
     )
 
     problem_name = f"problem_{problem_number:04d}"
