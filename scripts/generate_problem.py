@@ -1,5 +1,7 @@
 import os
+import re
 import sys
+from typing import *  # Kind of hacky, but it's required since we can not know what types are used in the code snippet
 
 import browser_cookie3
 import requests
@@ -115,9 +117,13 @@ def get_problem_expected(title_slug, data_input, question_id, typed_code):
         print(result["error"])
         sys.exit(1)
 
-    interpret_id = result["interpret_id"]
+    submissions_detail = try_get_expected(result["interpret_id"])
 
-    return try_get_expected(interpret_id)["expected_code_answer"]
+    if submissions_detail["status_code"] != 10:
+        print(submissions_detail["status_msg"])
+        sys.exit(1)
+
+    return submissions_detail["expected_code_answer"]
 
 
 def get_code_snippet(title_slug):
@@ -133,10 +139,22 @@ def get_code_snippet(title_slug):
     """
     variables = {"titleSlug": f"{title_slug}"}
     code_snippets = graphql(query, variables)
+    python3_snippet = {
+        info["lang"]: info["code"]
+        for info in code_snippets["question"]["codeSnippets"]
+    }["Python3"]
 
-    return {
-        info["lang"]: info["code"] for info in code_snippets["question"]["codeSnippets"]
-    }["Python3"] + "return None"
+    expected_output_type = eval(
+        python3_snippet.split("->")[1].split(":")[0].strip()
+    )
+    origin_expected_output_type = get_origin(expected_output_type)
+    default_value = (
+        expected_output_type()
+        if origin_expected_output_type is None
+        else origin_expected_output_type()
+    )
+
+    return python3_snippet + f"return {repr(default_value)}\n"
 
 
 def set_session():
@@ -149,7 +167,6 @@ def set_session():
 
 
 def get_problems_infos(n):
-    set_session()
     problem = get_problem_info(n)
     input = get_problem_input(problem["titleSlug"])
     code = get_code_snippet(problem["titleSlug"])
@@ -180,22 +197,38 @@ def generate_problem(problem_number):
         "tests = [\n"
         + "\n".join(
             tests_template(input, expected)
-            for input, expected in zip(problem_info["input"], problem_info["expected"])
+            for input, expected in zip(
+                problem_info["input"], problem_info["expected"]
+            )
         )
         + "\n]"
     )
 
     problem_name = f"problem_{problem_number:04d}"
-    os.makedirs(f"problems/{problem_name}")
+    os.makedirs(f"problems/{problem_name}", exist_ok=True)
     with open(f"problems/{problem_name}/solution_1.py", "w") as solution:
         if "List[" in problem_info["code"]:
             solution.writelines("from typing import List\n")
         if "Optional[" in problem_info["code"]:
             solution.writelines("from typing import Optional\n")
 
+        solution.writelines("import pytest\n\n\n")
         solution.writelines(problem_info["code"])
         solution.writelines("\n\n")
         solution.writelines(tests)
+        solution.writelines("\n\n\n")
+
+        solution.writelines(
+            f"""@pytest.mark.timeout(2)
+@pytest.mark.parametrize(
+    "inputs, expected",
+    tests,
+)
+def test_validator(inputs, expected):
+    output = Solution().{re.findall(r"def ([^(]+)", problem_info["code"])[0]}(*inputs)
+    assert output == expected
+"""
+        )
 
 
 if __name__ == "__main__":
@@ -203,4 +236,5 @@ if __name__ == "__main__":
         print("Usage: python generate_problem.py <problem_number>")
         sys.exit(1)
 
+    set_session()
     generate_problem(int(sys.argv[1]))
