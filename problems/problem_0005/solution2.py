@@ -13,11 +13,7 @@ class Solution:
             return ""
 
         return max(
-            (
-                max_palindrome("#" + s + "^", mid + 1, even)
-                for mid in range(len(s))
-                for even in (0, 1)
-            ),
+            (max_palindrome("#" + s + "^", mid + 1, even) for mid in range(len(s)) for even in (0, 1)),
             key=len,
         )
 

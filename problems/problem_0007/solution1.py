@@ -6,8 +6,7 @@ class Solution:
         res = 0
         while x:
             if res > min_max_div_10 or (
-                res == min_max_div_10
-                and ((sign == 1 and x % 10 > 7) or (sign == -1 and x % 10 > 8))
+                res == min_max_div_10 and ((sign == 1 and x % 10 > 7) or (sign == -1 and x % 10 > 8))
             ):
                 return 0
             res = res * 10 + x % 10

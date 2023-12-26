@@ -5,13 +5,9 @@ class Solution:
         for i in range(len(s) + 1):
             for j in range(1, len(p) + 1):
                 if p[j - 1] == "*":
-                    dp[i][j] = dp[i][j - 2] or (
-                        i > 0 and dp[i - 1][j] and p[j - 2] in (s[i - 1], ".")
-                    )
+                    dp[i][j] = dp[i][j - 2] or (i > 0 and dp[i - 1][j] and p[j - 2] in (s[i - 1], "."))
                 else:
-                    dp[i][j] = (
-                        i > 0 and dp[i - 1][j - 1] and p[j - 1] in (s[i - 1], ".")
-                    )
+                    dp[i][j] = i > 0 and dp[i - 1][j - 1] and p[j - 1] in (s[i - 1], ".")
         return dp[-1][-1]
 
 

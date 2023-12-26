@@ -6,9 +6,7 @@ class Solution:
         total = len(nums1) + len(nums2)
         partition_size = total // 2
 
-        if len(nums1) > len(
-            nums2
-        ):  # Ensure we apply binary search to the smaller array
+        if len(nums1) > len(nums2):  # Ensure we apply binary search to the smaller array
             nums1, nums2 = nums2, nums1
 
         left, right = 0, len(nums1) - 1

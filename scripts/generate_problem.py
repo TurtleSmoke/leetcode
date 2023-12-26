@@ -139,20 +139,11 @@ def get_code_snippet(title_slug):
     """
     variables = {"titleSlug": f"{title_slug}"}
     code_snippets = graphql(query, variables)
-    python3_snippet = {
-        info["lang"]: info["code"]
-        for info in code_snippets["question"]["codeSnippets"]
-    }["Python3"]
+    python3_snippet = {info["lang"]: info["code"] for info in code_snippets["question"]["codeSnippets"]}["Python3"]
 
-    expected_output_type = eval(
-        python3_snippet.split("->")[1].split(":")[0].strip()
-    )
+    expected_output_type = eval(python3_snippet.split("->")[1].split(":")[0].strip())
     origin_expected_output_type = get_origin(expected_output_type)
-    default_value = (
-        expected_output_type()
-        if origin_expected_output_type is None
-        else origin_expected_output_type()
-    )
+    default_value = expected_output_type() if origin_expected_output_type is None else origin_expected_output_type()
 
     return python3_snippet + f"return {repr(default_value)}\n"
 
@@ -170,9 +161,7 @@ def get_problems_infos(n):
     problem = get_problem_info(n)
     input = get_problem_input(problem["titleSlug"])
     code = get_code_snippet(problem["titleSlug"])
-    expected = get_problem_expected(
-        problem["titleSlug"], "\n".join(input), problem["questionId"], code
-    )
+    expected = get_problem_expected(problem["titleSlug"], "\n".join(input), problem["questionId"], code)
 
     input = list(map(str.split, input))
 
@@ -196,10 +185,7 @@ def generate_problem(problem_number):
     tests = (
         "tests = [\n"
         + "\n".join(
-            tests_template(input, expected)
-            for input, expected in zip(
-                problem_info["input"], problem_info["expected"]
-            )
+            tests_template(input, expected) for input, expected in zip(problem_info["input"], problem_info["expected"])
         )
         + "\n]"
     )
