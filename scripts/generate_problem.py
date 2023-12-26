@@ -1,6 +1,8 @@
 import os
 import re
 import sys
+
+# pylint: disable=unused-wildcard-import, wildcard-import
 from typing import *  # Kind of hacky, but it's required since we can not know what types are used in the code snippet
 
 import browser_cookie3
