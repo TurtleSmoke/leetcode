@@ -1,0 +1,25 @@
+{% for import in imports %}{{ import }}
+{% endfor %}
+
+
+
+{{ solution }}
+
+tests = [
+    {% for inputs, expected in testcases %}
+    (
+        {{ inputs }},
+        {{ expected }},
+    ),
+    {% endfor %}
+]
+
+
+@pytest.mark.timeout(2)
+@pytest.mark.parametrize(
+    "inputs, expected",
+    tests,
+)
+def test_validator(inputs, expected):
+    output = Solution().{{ function_name }}(*inputs)
+    assert output == expected
