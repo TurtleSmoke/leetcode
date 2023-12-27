@@ -49,7 +49,6 @@ def validator(swapPairs, inputs, expected):
     output = swapPairs(list_to_ListNode(inputs[0]))
     expected = list_to_ListNode(expected)
     while output and expected:
-        print(output.val, expected.val)
         assert output.val == expected.val, (output.val, expected.val)
         output = output.next
         expected = expected.next

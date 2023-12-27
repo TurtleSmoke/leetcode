@@ -14,7 +14,6 @@ class Solution:
                     j = stack_left.pop()
                     res[j] = i - j + 1
 
-        print(res)
         max_len = 0
         i = 0
         while i < len(res):
