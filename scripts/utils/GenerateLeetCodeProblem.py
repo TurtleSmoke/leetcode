@@ -10,8 +10,8 @@ import sys
 
 
 class GenerateLeetCodeProblem(LeetCodeSession):
-    def __init__(self, problem_number):
-        super().__init__(problem_number)
+    def __init__(self, problem_id):
+        super().__init__(problem_id)
         self.problem_info = None
         self.template = jinja2.Template(open("scripts/utils/templates/problem_template").read())
 
@@ -29,11 +29,13 @@ class GenerateLeetCodeProblem(LeetCodeSession):
 
     def get_infos(self):
         if self.title_slug is None or self.question_id is None:
-            self.set_problem_infos(self.problem_number)
+            self.set_problem_infos(self.problem_id)
 
         testcases_input = self.get_problem_example_test_case(self.title_slug)
         default_code = self.get_default_code(self.get_code_snippet(self.title_slug))
         dry_run_answer = self.send_dry_run(self.title_slug, "\n".join(testcases_input), self.question_id, default_code)
+        print(self.problem_id, self.title_slug)
+        print(dry_run_answer)
 
         if dry_run_answer["status_code"] != 10:
             print(dry_run_answer)
@@ -69,7 +71,7 @@ class GenerateLeetCodeProblem(LeetCodeSession):
         )
 
         formatted_code = black.format_str(code, mode=self.black_mode)
-        path = f"problems/problem_{self.problem_number:04d}/"
+        path = f"problems/problem_{self.problem_id:04d}/"
         os.makedirs(path, exist_ok=True)
         with open(path + "solution_1.py", "w") as f:
             f.write(formatted_code)

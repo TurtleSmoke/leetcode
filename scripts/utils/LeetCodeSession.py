@@ -8,7 +8,7 @@ LEETCODE_URL = "https://leetcode.com"
 
 
 class LeetCodeSession:
-    def __init__(self, problem_number=None):
+    def __init__(self, problem_id=None):
         self.session = self.set_session()
         self.headers = {
             "origin": LEETCODE_URL,
@@ -17,7 +17,9 @@ class LeetCodeSession:
             "x-csrftoken": self.session.cookies.get("csrftoken"),
         }
 
-        self.problem_number = problem_number
+        # Problem id is the questionFrontendId, not the questionId
+        # A bit sus, but I don't exactly know what should be used
+        self.problem_id = problem_id
         self.title_slug = None
         self.question_id = None
 
@@ -86,12 +88,29 @@ class LeetCodeSession:
     def get_submission_detail(self, submission_id):
         return self.try_get_expected(submission_id)
 
-    def get_problem_info(self, problem_number):
+    def get_problem_info(self, title_slug):
+        query = """
+            query questionTitle($titleSlug: String!) {
+              question(titleSlug: $titleSlug) {
+                questionId
+                titleSlug
+              }
+            }
+        """
+
+        variables = {"titleSlug": title_slug}
+
+        return self.graphql(query, variables)["question"]
+
+    def get_problem_slug(self, problem_frontend_id):
+        # It's also possible to get the questionId, but in fact it returns the
+        # questionFrontendId which is not the same as the questionId.
+        # I guess the graphql was updated but some old code is still available.
+        # There is certainly a better way to get the titleSlug from the problem number... But hey, it works.
         query = """
         query problemsetQuestionList($categorySlug: String, $limit: Int, $skip: Int, $filters: QuestionListFilterInput) {
             problemsetQuestionList: questionList(categorySlug: $categorySlug limit: $limit skip: $skip filters: $filters) {
                 questions: data {
-                    questionId
                     titleSlug
                 }
             }
@@ -99,12 +118,12 @@ class LeetCodeSession:
         """
         variables = {
             "categorySlug": "",
-            "skip": problem_number - 1,
+            "skip": problem_frontend_id - 1,
             "limit": 1,
             "filters": {},
         }
 
-        return self.graphql(query, variables)["problemsetQuestionList"]["questions"][0]
+        return self.graphql(query, variables)["problemsetQuestionList"]["questions"][0]["titleSlug"]
 
     def get_problem_example_test_case(self, title_slug):
         query = """
@@ -164,7 +183,8 @@ class LeetCodeSession:
         code_snippets = self.graphql(query, variables)
         return code_snippets["question"]["codeSnippets"]
 
-    def set_problem_infos(self, problem_number):
-        problem = self.get_problem_info(problem_number)
+    def set_problem_infos(self, problem_frontend_id):
+        problem_slug = self.get_problem_slug(problem_frontend_id)
+        problem = self.get_problem_info(problem_slug)
         self.title_slug = problem["titleSlug"]
         self.question_id = problem["questionId"]

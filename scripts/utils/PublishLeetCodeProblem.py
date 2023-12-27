@@ -6,9 +6,9 @@ import sys
 
 
 class PublishLeetCodeProblem(LeetCodeSession):
-    def __init__(self, problem_number, solution_number=1):
-        super().__init__(problem_number)
-        self.code_path = f"problems/problem_{self.problem_number:04d}/solution_{solution_number}.py"
+    def __init__(self, problem_id, solution_number=1):
+        super().__init__(problem_id)
+        self.code_path = f"problems/problem_{self.problem_id:04d}/solution_{solution_number}.py"
         self.submission_detail = None
 
         self.full_code = open(self.code_path).read()
@@ -57,9 +57,9 @@ class PublishLeetCodeProblem(LeetCodeSession):
 
     def publish_problem(self):
         if self.title_slug is None:
-            self.set_problem_infos(self.problem_number)
+            self.set_problem_infos(self.problem_id)
 
-        self.submission_detail = self.send_submission(self.title_slug, self.problem_number, self.get_code_to_submit())
+        self.submission_detail = self.send_submission(self.title_slug, self.question_id, self.get_code_to_submit())
 
         if self.submission_detail["status_code"] == 10:
             print("Submission Accepted!")
