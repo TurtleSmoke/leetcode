@@ -35,8 +35,9 @@ class LeetCodeSession:
 
     @staticmethod
     def set_session():
-        cookie = getattr(browser_cookie3, "firefox")(domain_name="leetcode.com")
+        cookie = browser_cookie3.firefox(domain_name="leetcode.com")
         session = requests.Session()
+
         for c in cookie:
             if c.name in ("LEETCODE_SESSION", "csrftoken"):
                 session.cookies.set_cookie(c)
