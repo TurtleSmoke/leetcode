@@ -6,16 +6,12 @@ import sys
 
 # To lazy to use real argument parsing
 if __name__ == "__main__":
-    if len(sys.argv) < 2:
-        print("Usage: python leetcode.py <generate|publish> <problem_id> [solution_number]")
-        sys.exit(1)
-
     if sys.argv[1] == "generate":
-        if len(sys.argv) != 3:
-            print("Usage: python generate_problem.py <problem_id>")
+        if len(sys.argv) not in (2, 3):
+            print("Usage: python generate_problem.py [problem_id]")
             sys.exit(1)
 
-        generate_problem = GenerateLeetCodeProblem(int(sys.argv[2]))
+        generate_problem = GenerateLeetCodeProblem(None if len(sys.argv) == 2 else int(sys.argv[2]))
         generate_problem.get_infos()
         generate_problem.dump()
     elif sys.argv[1] == "publish":
@@ -26,5 +22,6 @@ if __name__ == "__main__":
         publish_problem = PublishLeetCodeProblem(*map(int, sys.argv[2:]))
         publish_problem.publish_problem()
     else:
-        print("Usage: python publish_problem.py <generate|publish> <problem_id> [solution_number]")
+        print("Usage: python publish_problem.py generate [problem_id]")
+        print("Usage: python publish_problem.py publish <problem_id> [solution_number]")
         sys.exit(1)

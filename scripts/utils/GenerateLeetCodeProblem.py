@@ -75,3 +75,5 @@ class GenerateLeetCodeProblem(LeetCodeSession):
         os.makedirs(path, exist_ok=True)
         with open(path + "solution_1.py", "w") as f:
             f.write(formatted_code)
+
+        print(f"Generated problem {self.problem_id} in {path}")

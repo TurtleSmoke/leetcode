@@ -125,6 +125,17 @@ class LeetCodeSession:
 
         return self.graphql(query, variables)["problemsetQuestionList"]["questions"][0]["titleSlug"]
 
+    def get_daily_problem_slug(self):
+        query = """
+        query questionOfToday {
+          activeDailyCodingChallengeQuestion {
+            question{ titleSlug }
+            }
+          }
+        """
+
+        return self.graphql(query, {})["activeDailyCodingChallengeQuestion"]["question"]["titleSlug"]
+
     def get_problem_example_test_case(self, title_slug):
         query = """
         query getQuestionDetail($titleSlug: String!) {
@@ -184,7 +195,11 @@ class LeetCodeSession:
         return code_snippets["question"]["codeSnippets"]
 
     def set_problem_infos(self, problem_frontend_id):
-        problem_slug = self.get_problem_slug(problem_frontend_id)
+        if problem_frontend_id is None:
+            problem_slug = self.get_daily_problem_slug()
+        else:
+            problem_slug = self.get_problem_slug(problem_frontend_id)
+
         problem = self.get_problem_info(problem_slug)
         self.title_slug = problem["titleSlug"]
         self.question_id = problem["questionId"]
