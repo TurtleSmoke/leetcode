@@ -6,13 +6,14 @@ import sys
 
 
 class PublishLeetCodeProblem(LeetCodeSession):
-    def __init__(self, problem_id, solution_number=1):
-        super().__init__(problem_id)
-        self.code_path = f"problems/problem_{self.problem_id:04d}/solution_{solution_number}.py"
-        self.submission_detail = None
+    def __init__(self, question_frontend_id=None, solution_number=1):
+        super().__init__(question_frontend_id)
+        self.solution_number = solution_number
 
-        self.full_code = open(self.code_path).read()
-        self.tree = ast.parse(self.full_code)
+        self.submission_detail = None
+        self.code_path = None
+        self.full_code = None
+        self.tree = None
 
     def add_failed_testcase(self):
         # Testcase has one line per input
@@ -57,7 +58,11 @@ class PublishLeetCodeProblem(LeetCodeSession):
 
     def publish_problem(self):
         if self.title_slug is None:
-            self.set_problem_infos(self.problem_id)
+            self.set_problem_infos()
+
+        self.code_path = f"problems/problem_{self.question_frontend_id:04d}/solution_{self.solution_number}.py"
+        self.full_code = open(self.code_path).read()
+        self.tree = ast.parse(self.full_code)
 
         self.submission_detail = self.send_submission(self.title_slug, self.question_id, self.get_code_to_submit())
 

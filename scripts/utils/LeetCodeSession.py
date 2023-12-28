@@ -8,7 +8,7 @@ LEETCODE_URL = "https://leetcode.com"
 
 
 class LeetCodeSession:
-    def __init__(self, problem_id=None):
+    def __init__(self, question_frontend_id=None):
         self.session = self.set_session()
         self.headers = {
             "origin": LEETCODE_URL,
@@ -19,7 +19,7 @@ class LeetCodeSession:
 
         # Problem id is the questionFrontendId, not the questionId
         # A bit sus, but I don't exactly know what should be used
-        self.problem_id = problem_id
+        self.question_frontend_id = question_frontend_id
         self.title_slug = None
         self.question_id = None
 
@@ -39,6 +39,7 @@ class LeetCodeSession:
     def set_session():
         cookie = browser_cookie3.firefox(domain_name="leetcode.com")
         session = requests.Session()
+        session.get(LEETCODE_URL)  # Get the csrftoken if not captured by browser_cookie3 for some reason
 
         for c in cookie:
             if c.name in ("LEETCODE_SESSION", "csrftoken"):
@@ -46,6 +47,8 @@ class LeetCodeSession:
 
         if session.cookies.get("LEETCODE_SESSION") is None or session.cookies.get("csrftoken") is None:
             print("User is not authenticated.")
+            print(session.cookies.get("LEETCODE_SESSION"))
+            print(session.cookies.get("csrftoken"))
             sys.exit(1)
 
         return session
@@ -68,10 +71,17 @@ class LeetCodeSession:
             sys.exit(1)
 
     def graphql(self, query, variables):
-        return self.try_request_post(
+        response = self.try_request_post(
             url=f"{LEETCODE_URL}/graphql/",
             json={"query": query, "variables": variables},
-        )["data"]
+        )
+
+        if "data" not in response:
+            print("Error: No data in response.")
+            print(response)
+            sys.exit(1)
+
+        return response["data"]
 
     def try_request_post(self, url, json):
         try:
@@ -129,12 +139,15 @@ class LeetCodeSession:
         query = """
         query questionOfToday {
           activeDailyCodingChallengeQuestion {
-            question{ titleSlug }
+            question{
+             titleSlug 
+             questionFrontendId
             }
           }
+        }
         """
 
-        return self.graphql(query, {})["activeDailyCodingChallengeQuestion"]["question"]["titleSlug"]
+        return self.graphql(query, {})["activeDailyCodingChallengeQuestion"]["question"]
 
     def get_problem_example_test_case(self, title_slug):
         query = """
@@ -194,11 +207,13 @@ class LeetCodeSession:
         code_snippets = self.graphql(query, variables)
         return code_snippets["question"]["codeSnippets"]
 
-    def set_problem_infos(self, problem_frontend_id):
-        if problem_frontend_id is None:
-            problem_slug = self.get_daily_problem_slug()
+    def set_problem_infos(self):
+        if self.question_frontend_id is None:
+            problem = self.get_daily_problem_slug()
+            self.question_frontend_id = int(problem["questionFrontendId"])
+            problem_slug = problem["titleSlug"]
         else:
-            problem_slug = self.get_problem_slug(problem_frontend_id)
+            problem_slug = self.get_problem_slug(self.question_frontend_id)
 
         problem = self.get_problem_info(problem_slug)
         self.title_slug = problem["titleSlug"]

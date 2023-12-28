@@ -10,10 +10,10 @@ import sys
 
 
 class GenerateLeetCodeProblem(LeetCodeSession):
-    def __init__(self, problem_id):
-        super().__init__(problem_id)
-        self.problem_info = None
+    def __init__(self, question_frontend_id=None):
+        super().__init__(question_frontend_id)
         self.template = jinja2.Template(open("scripts/utils/templates/problem_template").read())
+        self.problem_info = None
 
     def get_default_code(self, code_snippets, lang="Python3"):
         python3_snippet = next(json["code"] for json in code_snippets if json["lang"] == lang)
@@ -28,14 +28,12 @@ class GenerateLeetCodeProblem(LeetCodeSession):
         return python3_snippet + f"return {repr(default_value)}\n"
 
     def get_infos(self):
-        if self.title_slug is None or self.question_id is None:
-            self.set_problem_infos(self.problem_id)
+        if self.title_slug is None or self.question_id is None or self.problem_info is None:
+            self.set_problem_infos()
 
         testcases_input = self.get_problem_example_test_case(self.title_slug)
         default_code = self.get_default_code(self.get_code_snippet(self.title_slug))
         dry_run_answer = self.send_dry_run(self.title_slug, "\n".join(testcases_input), self.question_id, default_code)
-        print(self.problem_id, self.title_slug)
-        print(dry_run_answer)
 
         if dry_run_answer["status_code"] != 10:
             print(dry_run_answer)
@@ -71,9 +69,9 @@ class GenerateLeetCodeProblem(LeetCodeSession):
         )
 
         formatted_code = black.format_str(code, mode=self.black_mode)
-        path = f"problems/problem_{self.problem_id:04d}/"
+        path = f"problems/problem_{self.question_frontend_id:04d}/"
         os.makedirs(path, exist_ok=True)
         with open(path + "solution_1.py", "w") as f:
             f.write(formatted_code)
 
-        print(f"Generated problem {self.problem_id} in {path}")
+        print(f"Generated problem {self.question_frontend_id}")

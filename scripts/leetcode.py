@@ -11,11 +11,11 @@ if __name__ == "__main__":
             print("Usage: python generate_problem.py [problem_id]")
             sys.exit(1)
 
-        generate_problem = GenerateLeetCodeProblem(None if len(sys.argv) == 2 else int(sys.argv[2]))
+        generate_problem = GenerateLeetCodeProblem(*map(int, sys.argv[2:]))
         generate_problem.get_infos()
         generate_problem.dump()
     elif sys.argv[1] == "publish":
-        if len(sys.argv) not in (3, 4):
+        if len(sys.argv) not in (2, 3, 4):
             print("Usage: python publish_problem.py <problem_id> [solution_number]")
             sys.exit(1)
 
