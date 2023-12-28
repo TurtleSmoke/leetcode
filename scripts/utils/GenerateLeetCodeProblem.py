@@ -75,3 +75,4 @@ class GenerateLeetCodeProblem(LeetCodeSession):
             f.write(formatted_code)
 
         print(f"Generated problem {self.question_frontend_id}")
+        print(f"Check it out at {LeetCodeSession.LEETCODE_URL}/problems/{self.title_slug}/")

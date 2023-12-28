@@ -4,15 +4,15 @@ import requests
 import sys
 import tenacity
 
-LEETCODE_URL = "https://leetcode.com"
-
 
 class LeetCodeSession:
+    LEETCODE_URL = "https://leetcode.com"
+
     def __init__(self, question_frontend_id=None):
         self.session = self.set_session()
         self.headers = {
-            "origin": LEETCODE_URL,
-            "referer": LEETCODE_URL,
+            "origin": LeetCodeSession.LEETCODE_URL,
+            "referer": LeetCodeSession.LEETCODE_URL,
             "x-requested-with": "XMLHttpRequest",
             "x-csrftoken": self.session.cookies.get("csrftoken"),
         }
@@ -37,9 +37,9 @@ class LeetCodeSession:
 
     @staticmethod
     def set_session():
-        cookie = browser_cookie3.firefox(domain_name="leetcode.com")
+        cookie = browser_cookie3.firefox(domain_name="leetcode")
         session = requests.Session()
-        session.get(LEETCODE_URL)  # Get the csrftoken if not captured by browser_cookie3 for some reason
+        session.get(LeetCodeSession.LEETCODE_URL)  # Get the csrftoken if not captured by browser_cookie3.
 
         for c in cookie:
             if c.name in ("LEETCODE_SESSION", "csrftoken"):
@@ -60,7 +60,7 @@ class LeetCodeSession:
     )
     def try_get_expected(self, submission_id):
         try:
-            res = self.session.get(f"{LEETCODE_URL}/submissions/detail/{submission_id}/check/")
+            res = self.session.get(f"{LeetCodeSession.LEETCODE_URL}/submissions/detail/{submission_id}/check/")
             return res.json()
         except requests.ConnectionError:
             print("Error: Request failed.")
@@ -72,7 +72,7 @@ class LeetCodeSession:
 
     def graphql(self, query, variables):
         response = self.try_request_post(
-            url=f"{LEETCODE_URL}/graphql/",
+            url=f"{LeetCodeSession.LEETCODE_URL}/graphql/",
             json={"query": query, "variables": variables},
         )
 
@@ -169,7 +169,9 @@ class LeetCodeSession:
             "data_input": f"{data_input}",
         }
 
-        answer = self.try_request_post(f"{LEETCODE_URL}/problems/{title_slug}/interpret_solution/", json)
+        answer = self.try_request_post(
+            f"{LeetCodeSession.LEETCODE_URL}/problems/{title_slug}/interpret_solution/", json
+        )
 
         if "interpret_id" not in answer:
             print(f"Error: No interpret_id in response:\n{answer}")
@@ -184,7 +186,7 @@ class LeetCodeSession:
             "typed_code": f"{typed_code}",
         }
 
-        answer = self.try_request_post(f"{LEETCODE_URL}/problems/{title_slug}/submit/", json)
+        answer = self.try_request_post(f"{LeetCodeSession.LEETCODE_URL}/problems/{title_slug}/submit/", json)
 
         if "submission_id" not in answer:
             print(f"Error: No submission_id in response:\n{answer}")
