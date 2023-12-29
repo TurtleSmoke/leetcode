@@ -56,7 +56,7 @@ class LeetCodeSession:
     @tenacity.retry(
         retry=tenacity.retry_if_result(lambda res: res["state"] != "SUCCESS"),
         stop=tenacity.stop_after_attempt(5),
-        wait=tenacity.wait_fixed(2),
+        wait=tenacity.wait_exponential(multiplier=1, min=2, max=4),
     )
     def try_get_expected(self, submission_id):
         try:

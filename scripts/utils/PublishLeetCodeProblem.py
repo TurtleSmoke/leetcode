@@ -17,7 +17,7 @@ class PublishLeetCodeProblem(LeetCodeSession):
 
     def add_failed_testcase(self):
         # Testcase has one line per input
-        input_formatted = self.submission_detail["input"].split("\n")
+        input_formatted = self.submission_detail["last_testcase"].split("\n")
         input_formatted = tuple(map(eval, input_formatted))
         expected_output = eval(self.submission_detail["expected_output"])
         tests = next(node for node in self.tree.body if isinstance(node, ast.Assign) and node.targets[0].id == "tests")
@@ -68,9 +68,14 @@ class PublishLeetCodeProblem(LeetCodeSession):
 
         if self.submission_detail["status_code"] == 10:
             print("Submission Accepted!")
-        elif self.submission_detail["status_code"] == 11:
+        elif self.submission_detail["status_code"] in (11, 12):
+            # Blablabla, you should use an Enum, blabla, I'm lazy.
+            # 11: Wrong Answer
+            # 12: Memory Limit Exceeded
+            print(self.submission_detail)
             self.dump_new_code()
             print("Added failed testcase to code.")
+            print(self.submission_detail["status_msg"])
         else:
             print("Submission Error!")
             print(self.submission_detail)
