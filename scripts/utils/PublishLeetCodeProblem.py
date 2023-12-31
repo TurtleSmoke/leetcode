@@ -68,11 +68,11 @@ class PublishLeetCodeProblem(LeetCodeSession):
 
         if self.submission_detail["status_code"] == 10:
             print("Submission Accepted!")
-        elif self.submission_detail["status_code"] in (11, 12):
+        elif self.submission_detail["status_code"] in (11, 12, 14):
             # Blablabla, you should use an Enum, blabla, I'm lazy.
             # 11: Wrong Answer
             # 12: Memory Limit Exceeded
-            print(self.submission_detail)
+            # 14: Time Limit Exceeded
             self.dump_new_code()
             print("Added failed testcase to code.")
             print(self.submission_detail["status_msg"])
