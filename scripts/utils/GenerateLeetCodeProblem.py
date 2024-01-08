@@ -41,6 +41,8 @@ class GenerateLeetCodeProblem(LeetCodeSession):
 
         # Each testcase input has one line per input
         testcases_input = list(map(str.split, testcases_input))
+        # Replace null by None, useful when input is Optional
+        testcases_input = [[input.replace("null", "None") for input in inputs] for inputs in testcases_input]
         testcases_input = [tuple(map(eval, inputs)) for inputs in testcases_input]
         self.problem_info = {
             "default_code": default_code,
