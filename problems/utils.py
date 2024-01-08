@@ -39,3 +39,25 @@ class ListNode:
         assert (
             not head1 and not head2
         ), f"got: {ListNode.ListNode_to_list(ohead1)}, expected: {ListNode.ListNode_to_list(ohead2)}"
+
+
+class TreeNode:
+    def __init__(self, val=0, left=None, right=None):
+        self.val = val
+        self.left = left
+        self.right = right
+
+    @staticmethod
+    def list_to_TreeNode(l):
+        if not l:
+            return None
+
+        def rec(i):
+            if i >= len(l) or l[i] is None:
+                return None
+            node = TreeNode(l[i])
+            node.left = rec(2 * i + 1)
+            node.right = rec(2 * i + 2)
+            return node
+
+        return rec(0)
