@@ -52,12 +52,18 @@ class TreeNode:
         if not l:
             return None
 
-        def rec(i):
-            if i >= len(l) or l[i] is None:
-                return None
-            node = TreeNode(l[i])
-            node.left = rec(2 * i + 1)
-            node.right = rec(2 * i + 2)
-            return node
+        root = TreeNode(l[0])
+        queue = [root]
+        i = 1
+        while i < len(l):
+            node = queue.pop(0)
+            if i < len(l) and l[i] is not None:
+                node.left = TreeNode(l[i])
+                queue.append(node.left)
+            i += 1
+            if i < len(l) and l[i] is not None:
+                node.right = TreeNode(l[i])
+                queue.append(node.right)
+            i += 1
 
-        return rec(0)
+        return root
