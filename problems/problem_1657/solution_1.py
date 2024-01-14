@@ -9,7 +9,6 @@ class Solution:
         return c1.keys() == c2.keys() and sorted(c1.values()) == sorted(c2.values())
 
 
-
 tests = [
     (
         ("abc", "bca"),
