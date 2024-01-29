@@ -3,7 +3,7 @@ import pytest
 
 class Solution:
     def kInversePairs(self, n: int, k: int) -> int:
-        if n < 2 or k < 0 or k > n * (n - 1) // 2:
+        if k < 0 or k > n * (n - 1) // 2:
             return 0
 
         dp = [[0 for _ in range(k + 1)] for _ in range(n + 1)]
@@ -14,7 +14,7 @@ class Solution:
                 if j >= i:
                     dp[i][j] -= dp[i - 1][j - i]
 
-        return dp[-1][-1] % 10**9
+        return dp[-1][-1] % (10**9 + 7)
 
 
 tests = [
@@ -26,15 +26,23 @@ tests = [
         (3, 1),
         2,
     ),
-    ((5, 5), 22),
+    (
+        (5, 5),
+        22,
+    ),
+    (
+        (1, 0),
+        1,
+    ),
+    (
+        (1000, 1000),
+        663677020,
+    ),
 ]
 
 
 @pytest.mark.timeout(2)
-@pytest.mark.parametrize(
-    "inputs, expected",
-    tests,
-)
+@pytest.mark.parametrize("inputs, expected", tests)
 def test_validator(inputs, expected):
     output = Solution().kInversePairs(*inputs)
     assert output == expected
