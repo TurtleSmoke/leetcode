@@ -1,6 +1,6 @@
 import pytest
 from typing import List
-from collections import Counter, defaultdict
+from collections import defaultdict
 
 
 class Solution:
