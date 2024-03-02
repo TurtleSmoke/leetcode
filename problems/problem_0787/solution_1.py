@@ -14,7 +14,7 @@ class Solution:
         min_cost = [float("inf") for _ in range(n)]
         steps = 0
         while queue and steps <= k:
-            for i in range(len(queue)):
+            for _ in range(len(queue)):
                 cur, prev_cost = queue.pop(0)
                 for neighbour, cost in graph[cur]:
                     if prev_cost + cost >= min_cost[neighbour]:

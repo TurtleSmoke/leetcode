@@ -1,6 +1,5 @@
 import pytest
 from typing import List
-import bisect
 
 
 class Solution:

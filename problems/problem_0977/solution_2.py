@@ -4,7 +4,7 @@ from typing import List
 
 class Solution:
     def sortedSquares(self, nums: List[int]) -> List[int]:
-        res = [0 for _ in nums]
+        res = list(range(len(nums)))
         l, r = 0, len(nums) - 1
         while l <= r:
             left, right = abs(nums[l]), abs(nums[r])

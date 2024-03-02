@@ -6,7 +6,7 @@ import pytest
 
 
 class Solution:
-    def findCheapestPrice(self, n: int, flights: List[List[int]], src: int, dst: int, k: int) -> int:
+    def findCheapestPrice(self, _: int, flights: List[List[int]], src: int, dst: int, k: int) -> int:
         graph = defaultdict(list)
         for s, d, c in flights:
             graph[s].append((d, c))

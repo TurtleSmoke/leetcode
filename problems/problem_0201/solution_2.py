@@ -1,5 +1,4 @@
 import pytest
-from functools import reduce
 
 
 class Solution:

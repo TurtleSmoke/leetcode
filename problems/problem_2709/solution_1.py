@@ -9,7 +9,7 @@ class Solution:
         if len(nums) == 1:
             return True
 
-        parent = [_ for _ in range(0, len(nums))]
+        parent = list(range(len(nums)))
         set_size = [1 for i in range(len(nums))]
 
         def get_parent(x):
