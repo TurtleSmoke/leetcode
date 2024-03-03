@@ -1,7 +1,5 @@
 from .LeetCodeSession import LeetCodeSession
 
-# pylint: disable=wildcard-import,unused-wildcard-import
-from typing import *  # Kind of hacky, but it's required since we can not know the output type of the problem
 import black
 import jinja2
 import os
@@ -17,15 +15,7 @@ class GenerateLeetCodeProblem(LeetCodeSession):
 
     def get_default_code(self, code_snippets, lang="Python3"):
         python3_snippet = next(json["code"] for json in code_snippets if json["lang"] == lang)
-
-        expected_output_type = eval(python3_snippet.split("->")[1].split(":")[0].strip())
-        if expected_output_type is None:
-            return python3_snippet + "return\n"
-
-        origin_expected_output_type = get_origin(expected_output_type)
-        default_value = expected_output_type() if origin_expected_output_type is None else origin_expected_output_type()
-
-        return python3_snippet + f"return {repr(default_value)}\n"
+        return python3_snippet + "return None\n"
 
     def get_infos(self):
         if self.title_slug is None or self.question_id is None or self.problem_info is None:
