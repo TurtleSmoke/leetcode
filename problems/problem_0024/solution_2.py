@@ -48,6 +48,6 @@ def test_validator(inputs, expected):
         Solution(),
         next(method for method in dir(Solution()) if not method.startswith("_")),
     )
-    output = f(ListNode.list_to_ListNode(inputs[0]))
-    expected = ListNode.list_to_ListNode(expected)
+    output = f(ListNode.from_list(inputs[0]))
+    expected = ListNode.from_list(expected)
     ListNode.assert_list_equal(output, expected)

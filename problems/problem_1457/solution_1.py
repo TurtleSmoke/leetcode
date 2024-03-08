@@ -49,6 +49,6 @@ tests = [
     tests,
 )
 def test_validator(inputs, expected):
-    root = TreeNode.list_to_TreeNode(inputs[0])
+    root = TreeNode.from_list(inputs[0])
     output = Solution().pseudoPalindromicPaths(root)
     assert output == expected

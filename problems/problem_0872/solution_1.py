@@ -42,5 +42,5 @@ tests = [
 )
 def test_validator(inputs, expected):
     root1, root2 = inputs
-    output = Solution().leafSimilar(TreeNode.list_to_TreeNode(root1), TreeNode.list_to_TreeNode(root2))
+    output = Solution().leafSimilar(TreeNode.from_list(root1), TreeNode.from_list(root2))
     assert output == expected

@@ -47,5 +47,5 @@ tests = [
 )
 def test_validator(inputs, expected):
     tree, low, high = inputs
-    output = Solution().rangeSumBST(TreeNode.list_to_TreeNode(tree), low, high)
+    output = Solution().rangeSumBST(TreeNode.from_list(tree), low, high)
     assert output == expected

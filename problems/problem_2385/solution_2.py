@@ -53,5 +53,5 @@ tests = [
 )
 def test_validator(inputs, expected):
     root, start = inputs
-    output = Solution().amountOfTime(TreeNode.list_to_TreeNode(root), start)
+    output = Solution().amountOfTime(TreeNode.from_list(root), start)
     assert output == expected

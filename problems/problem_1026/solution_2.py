@@ -42,5 +42,5 @@ tests = [
     tests,
 )
 def test_validator(inputs, expected):
-    output = Solution().maxAncestorDiff(TreeNode.list_to_TreeNode(inputs[0]))
+    output = Solution().maxAncestorDiff(TreeNode.from_list(inputs[0]))
     assert output == expected

@@ -48,5 +48,5 @@ tests = [
     tests,
 )
 def test_validator(inputs, expected):
-    output = Solution().isEvenOddTree(TreeNode.list_to_TreeNode(*inputs))
+    output = Solution().isEvenOddTree(TreeNode.from_list(*inputs))
     assert output == expected

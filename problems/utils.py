@@ -4,7 +4,7 @@ class ListNode:
         self.next = next
 
     @staticmethod
-    def list_to_ListNode(l):
+    def from_list(l):
         if not l:
             return l
 
@@ -16,7 +16,7 @@ class ListNode:
         return head.next
 
     @staticmethod
-    def ListNode_to_list(head):
+    def to_list(head):
         if not head:
             return head
 
@@ -31,14 +31,10 @@ class ListNode:
         ohead1 = head1
         ohead2 = head2
         while head1 and head2:
-            assert (
-                head1.val == head2.val
-            ), f"got: {ListNode.ListNode_to_list(ohead1)}, expected: {ListNode.ListNode_to_list(ohead2)}"
+            assert head1.val == head2.val, f"got: {ListNode.to_list(ohead1)}, expected: {ListNode.to_list(ohead2)}"
             head1 = head1.next
             head2 = head2.next
-        assert (
-            not head1 and not head2
-        ), f"got: {ListNode.ListNode_to_list(ohead1)}, expected: {ListNode.ListNode_to_list(ohead2)}"
+        assert not head1 and not head2, f"got: {ListNode.to_list(ohead1)}, expected: {ListNode.to_list(ohead2)}"
 
 
 class TreeNode:
@@ -48,7 +44,7 @@ class TreeNode:
         self.right = right
 
     @staticmethod
-    def list_to_TreeNode(l):
+    def from_list(l):
         if not l:
             return None
 

@@ -38,6 +38,6 @@ tests = [
     tests,
 )
 def test_validator(inputs, expected):
-    input = TreeNode.list_to_TreeNode(inputs[0])
+    input = TreeNode.from_list(inputs[0])
     output = Solution().diameterOfBinaryTree(input)
     assert output == expected

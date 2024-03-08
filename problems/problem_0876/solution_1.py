@@ -36,6 +36,6 @@ tests = [
     tests,
 )
 def test_validator(inputs, expected):
-    output = Solution().middleNode(ListNode.list_to_ListNode(*inputs))
-    output = ListNode.ListNode_to_list(output)
+    output = Solution().middleNode(ListNode.from_list(*inputs))
+    output = ListNode.to_list(output)
     assert output == expected
