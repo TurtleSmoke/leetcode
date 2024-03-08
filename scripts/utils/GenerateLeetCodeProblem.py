@@ -47,11 +47,21 @@ class GenerateLeetCodeProblem(LeetCodeSession):
         testcases_input = list(map(str.split, testcases_input))
         # Replace null by None, useful when input is Optional
         testcases_input = [[input.replace("null", "None") for input in inputs] for inputs in testcases_input]
+        # Replace true and false by True and False
+        testcases_input = [
+            [input.replace("true", "True").replace("false", "False") for input in inputs] for inputs in testcases_input
+        ]
         testcases_input = [tuple(map(eval, inputs)) for inputs in testcases_input]
+
+        testcases_expected = dry_run_answer["expected_code_answer"]
+        # Replace true and false by True and False
+        testcases_expected = [
+            expected.replace("true", "True").replace("false", "False") for expected in testcases_expected
+        ]
         self.problem_info = {
             "default_code": default_code,
             "testcases_input": testcases_input,
-            "testcases_expected": dry_run_answer["expected_code_answer"],
+            "testcases_expected": testcases_expected,
         }
 
     def dump(self):
@@ -64,9 +74,13 @@ class GenerateLeetCodeProblem(LeetCodeSession):
             imports.append("from typing import List")
         if "Optional[" in self.problem_info["default_code"]:
             imports.append("from typing import Optional")
+        if "ListNode" in self.problem_info["default_code"]:
+            imports.append("from problems.utils import ListNode")
+        if "TreeNode" in self.problem_info["default_code"]:
+            imports.append("from problems.utils import TreeNode")
 
         solution = self.problem_info["default_code"]
-        function_name = re.findall(r"def ([^(]+)", self.problem_info["default_code"])[0]
+        function_name = re.findall(r"def ([^_][^(]+)", self.problem_info["default_code"])[0]
         code = self.template.render(
             solution=solution,
             imports=imports,

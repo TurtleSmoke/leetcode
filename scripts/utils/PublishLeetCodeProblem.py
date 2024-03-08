@@ -39,7 +39,8 @@ class PublishLeetCodeProblem(LeetCodeSession):
         imports = [
             ast.get_source_segment(self.full_code, node)
             for node in self.tree.body
-            if isinstance(node, (ast.Import, ast.ImportFrom))
+            if isinstance(node, ast.Import)
+            or (isinstance(node, ast.ImportFrom) and "problems.utils" not in node.module)
         ]
 
         solution = next(
