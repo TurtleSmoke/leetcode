@@ -11,9 +11,8 @@ class LeetCodeSession:
     def __init__(self, question_frontend_id=None):
         self.session = self.set_session()
         self.headers = {
-            "origin": LeetCodeSession.LEETCODE_URL,
             "referer": LeetCodeSession.LEETCODE_URL,
-            "x-requested-with": "XMLHttpRequest",
+            "User-Agent": "It is me, the user agent.",
             "x-csrftoken": self.session.cookies.get("csrftoken"),
         }
 
@@ -39,11 +38,10 @@ class LeetCodeSession:
     def set_session():
         cookie = browser_cookie3.firefox(domain_name="leetcode")
         session = requests.Session()
-        session.get(LeetCodeSession.LEETCODE_URL)  # Get the csrftoken if not captured by browser_cookie3.
 
         for c in cookie:
             if c.name in ("LEETCODE_SESSION", "csrftoken"):
-                session.cookies.set_cookie(c)
+                session.cookies.set(c.name, c.value)
 
         if session.cookies.get("LEETCODE_SESSION") is None or session.cookies.get("csrftoken") is None:
             print("User is not authenticated.")
@@ -60,7 +58,9 @@ class LeetCodeSession:
     )
     def try_get_expected(self, submission_id):
         try:
-            res = self.session.get(f"{LeetCodeSession.LEETCODE_URL}/submissions/detail/{submission_id}/check/")
+            res = self.session.get(
+                f"{LeetCodeSession.LEETCODE_URL}/submissions/detail/{submission_id}/check/", headers=self.headers
+            )
             return res.json()
         except requests.ConnectionError:
             print("Error: Request failed.")
@@ -140,7 +140,7 @@ class LeetCodeSession:
         query questionOfToday {
           activeDailyCodingChallengeQuestion {
             question{
-             titleSlug 
+             titleSlug
              questionFrontendId
             }
           }

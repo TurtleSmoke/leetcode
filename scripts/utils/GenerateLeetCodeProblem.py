@@ -18,7 +18,11 @@ class GenerateLeetCodeProblem(LeetCodeSession):
     def get_default_code(self, code_snippets, lang="Python3"):
         python3_snippet = next(json["code"] for json in code_snippets if json["lang"] == lang)
 
-        expected_output_type = eval(python3_snippet.split("->")[1].split(":")[0].strip())
+        try:
+            expected_output_type = eval(python3_snippet.split("->")[1].split(":")[0].strip())
+        except NameError:
+            return python3_snippet + "return None"
+
         if expected_output_type is None:
             return python3_snippet + "return\n"
 
