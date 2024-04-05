@@ -18,10 +18,12 @@ class PublishLeetCodeProblem(LeetCodeSession):
     def add_failed_testcase(self):
         # Testcase has one line per input
         input_formatted = self.submission_detail["last_testcase"].split("\n")
-        input_formatted = tuple(map(eval, input_formatted))
-        expected_output = eval(self.submission_detail["expected_output"])
-        tests = next(node for node in self.tree.body if isinstance(node, ast.Assign) and node.targets[0].id == "tests")
+        expected_output = self.submission_detail["expected_output"].replace("true", "True").replace("false", "False")
 
+        input_formatted = tuple(map(eval, input_formatted))
+        expected_output = eval(expected_output)
+
+        tests = next(node for node in self.tree.body if isinstance(node, ast.Assign) and node.targets[0].id == "tests")
         tests.value.elts.append(
             ast.Tuple(
                 elts=[
