@@ -63,3 +63,22 @@ class TreeNode:
             i += 1
 
         return root
+
+    @staticmethod
+    def to_list(root):
+        if not root:
+            return []
+
+        l = []
+        queue = [root]
+        while queue:
+            node = queue.pop(0)
+            if node:
+                l.append(node.val)
+                queue.append(node.left)
+                queue.append(node.right)
+            else:
+                l.append(None)
+        while l and l[-1] is None:
+            l.pop()
+        return l
