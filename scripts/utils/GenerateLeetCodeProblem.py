@@ -20,7 +20,7 @@ class GenerateLeetCodeProblem(LeetCodeSession):
 
         try:
             expected_output_type = eval(python3_snippet.split("->")[1].split(":")[0].strip())
-        except NameError:
+        except (NameError, IndexError):
             return python3_snippet + "return None"
 
         if expected_output_type is None:
