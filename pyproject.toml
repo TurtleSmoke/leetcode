@@ -32,7 +32,6 @@ line-length = 120
 select = ["E", "F", "B"]
 ignore = ["E741", "E731", "E501", "F405", "F403"]
 
-
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
