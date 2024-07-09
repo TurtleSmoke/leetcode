@@ -1,12 +1,14 @@
-from .LeetCodeSession import LeetCodeSession
-
-# pylint: disable=wildcard-import,unused-wildcard-import
-from typing import *  # Kind of hacky, but it's required since we can not know the output type of the problem
-import black
-import jinja2
 import os
 import re
 import sys
+
+# pylint: disable=wildcard-import,unused-wildcard-import
+from typing import *  # Kind of hacky, but it's required since we can not know the output type of the problem
+
+import black
+import jinja2
+
+from .LeetCodeSession import LeetCodeSession
 
 
 class GenerateLeetCodeProblem(LeetCodeSession):
@@ -49,14 +51,16 @@ class GenerateLeetCodeProblem(LeetCodeSession):
         testcases_input = [[input.replace("null", "None") for input in inputs] for inputs in testcases_input]
         # Replace true and false by True and False
         testcases_input = [
-            [input.replace("true", "True").replace("false", "False") for input in inputs] for inputs in testcases_input
+            [input.replace("true", "True").replace("false", "False").replace("null", "None") for input in inputs]
+            for inputs in testcases_input
         ]
         testcases_input = [tuple(map(eval, inputs)) for inputs in testcases_input]
 
         testcases_expected = dry_run_answer["expected_code_answer"]
         # Replace true and false by True and False
         testcases_expected = [
-            expected.replace("true", "True").replace("false", "False") for expected in testcases_expected
+            expected.replace("true", "True").replace("false", "False").replace("null", "None")
+            for expected in testcases_expected
         ]
         self.problem_info = {
             "default_code": default_code,
