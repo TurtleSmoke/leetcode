@@ -80,8 +80,10 @@ class GenerateLeetCodeProblem(LeetCodeSession):
             imports.append("from typing import Optional")
         if "ListNode" in self.problem_info["default_code"]:
             imports.append("from problems.utils import ListNode")
-        if "TreeNode" in self.problem_info["default_code"]:
+        elif "TreeNode" in self.problem_info["default_code"]:
             imports.append("from problems.utils import TreeNode")
+        elif "Node" in self.problem_info["default_code"]:
+            imports.append("from problems.utils import Node")
 
         solution = self.problem_info["default_code"]
         function_name = re.findall(r"def ([^_][^(]+)", self.problem_info["default_code"])[0]

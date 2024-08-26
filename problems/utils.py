@@ -82,3 +82,28 @@ class TreeNode:
         while l and l[-1] is None:
             l.pop()
         return l
+
+
+class Node:
+    def __init__(self, val=0, children=None):
+        self.val = val
+        self.children = children if children is not None else []
+
+    @staticmethod
+    def from_list(l):
+        if not l:
+            return None
+
+        root = Node(l[0])
+        queue = [root]
+        i = 2
+        while queue and i < len(l):
+            current = queue.pop(0)
+            while i < len(l) and l[i] is not None:
+                child = Node(l[i])
+                current.children.append(child)
+                queue.append(child)
+                i += 1
+            i += 1
+
+        return root
