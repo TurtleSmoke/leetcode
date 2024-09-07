@@ -1,8 +1,9 @@
-from .LeetCodeSession import LeetCodeSession
-
 import ast
-import black
 import sys
+
+import black
+
+from .LeetCodeSession import LeetCodeSession
 
 
 class PublishLeetCodeProblem(LeetCodeSession):
@@ -18,9 +19,14 @@ class PublishLeetCodeProblem(LeetCodeSession):
     def add_failed_testcase(self):
         # Testcase has one line per input
         input_formatted = self.submission_detail["last_testcase"].split("\n")
-        expected_output = self.submission_detail["expected_output"].replace("true", "True").replace("false", "False")
+        expected_output = (
+            self.submission_detail["expected_output"]
+            .replace("true", "True")
+            .replace("false", "False")
+            .replace("null", "None")
+        )
 
-        input_formatted = tuple(map(eval, input_formatted))
+        input_formatted = tuple(eval(x.replace("null", "None")) for x in input_formatted)
         expected_output = eval(expected_output)
 
         tests = next(node for node in self.tree.body if isinstance(node, ast.Assign) and node.targets[0].id == "tests")
