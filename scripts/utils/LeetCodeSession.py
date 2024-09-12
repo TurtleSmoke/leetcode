@@ -2,6 +2,7 @@ import black
 import browser_cookie3
 import requests
 import sys
+from pathlib import Path
 import tenacity
 
 
@@ -36,6 +37,14 @@ class LeetCodeSession:
 
     @staticmethod
     def set_session():
+        if Path(".cookies").exists():
+            session = requests.Session()
+            cookies = Path(".cookies").read_text().splitlines()
+            for cookie in cookies:
+                session.cookies.set(*cookie.split("=", 1))
+            return session
+
+        # If no cookies file is found, we try to get the cookies from the browser
         cookie = browser_cookie3.firefox(domain_name="leetcode")
         session = requests.Session()
 
