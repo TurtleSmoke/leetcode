@@ -1,12 +1,11 @@
-# [Leetcode](https://leetcode.com/) [![Lint](https://github.com/TurtleSmoke/leetcode/actions/workflows/lint.yml/badge.svg?branch=main)](https://github.com/TurtleSmoke/leetcode/actions/workflows/lint.yml) [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
+[![Ruff](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/ruff/main/assets/badge/v2.json)](https://github.com/astral-sh/ruff)
+[![CI](https://github.com/TurtleSmoke/leetcode/actions/workflows/ruff.yml/badge.svg?branch=main)](https://github.com/TurtleSmoke/leetcode/actions/workflows/ruff.yml)
+
+# [Leetcode](https://leetcode.com/)
 
 This repository contains my solutions to the problems on [Leetcode](https://leetcode.com/problemset/all/).
 
 ## Contributing
 
-Contributions will not be accepted, as this repository is only for personal usage.
-
-## Test
-
-[Python leetcode runner](https://github.com/tusharsadhwani/python_leetcode_runner) is used as the test framework.
-To execute the tests, you need to install the dependencies with `poetry install` and then run `pyleet filename.py`.
+This repository is dedicated to my personal learning journey, so contributions are not being accepted. However, you're
+welcome to use the code here for your own projects and learning purposes.
