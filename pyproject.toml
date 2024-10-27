@@ -19,7 +19,12 @@ dependencies = [
     "scikit-image>=0.24.0",
     "setuptools>=75.2.0",
     "tenacity>=9.0.0",
+    "black>=24.10.0",
 ]
+
+[tool.black]
+line-length = 120
+target-version = ['py312']
 
 [tool.ruff]
 line-length = 120
