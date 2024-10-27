@@ -8,7 +8,7 @@ class Solution:
     def jobScheduling(self, startTime: List[int], endTime: List[int], profit: List[int]) -> int:
         dp = [[0, 0]]
 
-        for job_end, job_start, job_profit in sorted(zip(endTime, startTime, profit)):
+        for job_end, job_start, job_profit in sorted(zip(endTime, startTime, profit, strict=False)):
             i = bisect.bisect(dp, [job_start + 1]) - 1
             if dp[i][1] + job_profit > dp[-1][1]:
                 dp.append([job_end, dp[i][1] + job_profit])

@@ -6,7 +6,7 @@ class Solution:
     def findMinDifference(self, timePoints: List[str]) -> int:
         timePoints = [int(time[:2]) * 60 + int(time[3:]) for time in timePoints]
         timePoints.sort()
-        return min((y - x) % (24 * 60) for x, y in zip(timePoints, timePoints[1:] + timePoints[:1]))
+        return min((y - x) % (24 * 60) for x, y in zip(timePoints, timePoints[1:] + timePoints[:1], strict=False))
 
 
 tests = [

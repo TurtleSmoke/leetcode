@@ -91,7 +91,7 @@ class GenerateLeetCodeProblem(LeetCodeSession):
             solution=solution,
             imports=imports,
             function_name=function_name,
-            testcases=zip(self.problem_info["testcases_input"], self.problem_info["testcases_expected"]),
+            testcases=zip(self.problem_info["testcases_input"], self.problem_info["testcases_expected"], strict=False),
         )
 
         formatted_code = black.format_str(code, mode=self.black_mode)

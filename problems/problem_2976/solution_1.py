@@ -8,7 +8,7 @@ import pytest
 class Solution:
     def minimumCost(self, source: str, target: str, original: List[str], changed: List[str], costs: List[int]) -> int:
         graph = defaultdict(list)
-        for s, d, c in zip(original, changed, costs):
+        for s, d, c in zip(original, changed, costs, strict=False):
             graph[s].append((d, c))
 
         def shortest_path(start, end):

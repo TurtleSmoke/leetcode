@@ -10,7 +10,7 @@ class Solution:
         self, n: int, edges: List[List[int]], succProb: List[float], start_node: int, end_node: int
     ) -> float:
         graph = defaultdict(list)
-        for (s, d), w in zip(edges, succProb):
+        for (s, d), w in zip(edges, succProb, strict=False):
             graph[s].append((w, d))
             graph[d].append((w, s))
 

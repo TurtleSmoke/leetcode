@@ -6,7 +6,7 @@ import pytest
 
 class Solution:
     def mincostToHireWorkers(self, quality: List[int], wage: List[int], k: int) -> float:
-        workers = sorted([float(w) / q, q] for w, q in zip(wage, quality))
+        workers = sorted([float(w) / q, q] for w, q in zip(wage, quality, strict=False))
         res = float("inf")
         qsum = 0
         heap = []

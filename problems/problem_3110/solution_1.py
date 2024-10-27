@@ -4,7 +4,7 @@ import pytest
 class Solution:
     def scoreOfString(self, s: str) -> int:
         score = list(map(ord, s))
-        return sum(abs(s2 - s1) for s1, s2 in zip(score[:-1], score[1:]))
+        return sum(abs(s2 - s1) for s1, s2 in zip(score[:-1], score[1:], strict=False))
 
 
 tests = [
