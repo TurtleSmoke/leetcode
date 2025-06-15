@@ -4,8 +4,8 @@ import pytest
 class Solution:
     def minMaxDifference(self, num: int) -> int:
         num = str(num)
-        max_num = int(num.replace(next((c for c in num if c != '9'), '9'), '9'))
-        min_num = int(num.replace(num[0], '0'))
+        max_num = int(num.replace(next((c for c in num if c != "9"), "9"), "9"))
+        min_num = int(num.replace(num[0], "0"))
         return max_num - min_num
 
 

@@ -16,8 +16,6 @@ class Solution:
         return res if parity else res - 2 * mini
 
 
-
-
 tests = [
     (
         ([[1, -1], [-1, 1]],),
