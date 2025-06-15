@@ -4,7 +4,7 @@ from typing import List
 
 class Solution:
     def largestCombination(self, candidates: List[int]) -> int:
-        return max(sum(x) for x in zip(*[map(int, format(x, "064b")) for x in candidates]))
+        return max(sum(x) for x in zip(*[map(int, format(x, "064b")) for x in candidates], strict=False))
 
 
 tests = [
