@@ -1,6 +1,7 @@
 import black
 import browser_cookie3
 import requests
+import json
 import sys
 from pathlib import Path
 import tenacity
@@ -82,7 +83,7 @@ class LeetCodeSession:
     def graphql(self, query, variables):
         response = self.try_request_post(
             url=f"{LeetCodeSession.LEETCODE_URL}/graphql/",
-            json={"query": query, "variables": variables},
+            data={"query": query, "variables": variables},
         )
 
         if "data" not in response:
@@ -92,9 +93,11 @@ class LeetCodeSession:
 
         return response["data"]
 
-    def try_request_post(self, url, json):
+    def try_request_post(self, url, data):
+        data = json.dumps(data, separators=(",", ":"))  # If space in json, error 413
+        headers = dict({"Content-Type": "application/json"}, **self.headers)  # Hardcode Content-Type since we pass data
         try:
-            res = self.session.post(url, json=json, headers=self.headers)
+            res = self.session.post(url, data=data, headers=headers)
             return res.json()
         except requests.ConnectionError:
             print("Error: Request failed.")
