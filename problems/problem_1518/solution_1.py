@@ -5,9 +5,9 @@ class Solution:
     def numWaterBottles(self, numBottles: int, numExchange: int) -> int:
         res = numBottles
         while numBottles >= numExchange:
-            res += numBottles // numExchange
-            numBottles = numBottles % numExchange + numBottles // numExchange
-
+            newBottles = numBottles // numExchange
+            res += newBottles
+            numBottles -= newBottles * (numExchange - 1)
         return res
 
 
