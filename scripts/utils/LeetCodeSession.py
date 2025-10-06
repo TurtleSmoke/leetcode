@@ -105,7 +105,7 @@ class LeetCodeSession:
         except requests.JSONDecodeError:
             print(res.text)
             print("Error: Invalid JSON response.")
-            sys.exit(1)
+            return None
 
     def get_submission_detail(self, submission_id):
         return self.try_get_expected(submission_id)
@@ -184,6 +184,8 @@ class LeetCodeSession:
         answer = self.try_request_post(
             f"{LeetCodeSession.LEETCODE_URL}/problems/{title_slug}/interpret_solution/", json
         )
+        if answer is None:
+            return None
 
         if "interpret_id" not in answer:
             print(f"Error: No interpret_id in response:\n{answer}")

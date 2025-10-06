@@ -41,7 +41,7 @@ class GenerateLeetCodeProblem(LeetCodeSession):
         default_code = self.get_default_code(self.get_code_snippet(self.title_slug))
         dry_run_answer = self.send_dry_run(self.title_slug, "\n".join(testcases_input), self.question_id, default_code)
 
-        if dry_run_answer["status_code"] != 10:
+        if dry_run_answer is not None and dry_run_answer["status_code"] != 10:
             print(dry_run_answer)
             sys.exit(1)
 
@@ -56,12 +56,15 @@ class GenerateLeetCodeProblem(LeetCodeSession):
         ]
         testcases_input = [tuple(map(eval, inputs)) for inputs in testcases_input]
 
-        testcases_expected = dry_run_answer["expected_code_answer"]
-        # Replace true and false by True and False
-        testcases_expected = [
-            expected.replace("true", "True").replace("false", "False").replace("null", "None")
-            for expected in testcases_expected
-        ]
+        if dry_run_answer is not None:
+            testcases_expected = dry_run_answer["expected_code_answer"]
+            # Replace true and false by True and False
+            testcases_expected = [
+                expected.replace("true", "True").replace("false", "False").replace("null", "None")
+                for expected in testcases_expected
+            ]
+        else:
+            testcases_expected = ["None" for _ in testcases_input]
         self.problem_info = {
             "default_code": default_code,
             "testcases_input": testcases_input,
