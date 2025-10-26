@@ -97,7 +97,11 @@ class GenerateLeetCodeProblem(LeetCodeSession):
             testcases=zip(self.problem_info["testcases_input"], self.problem_info["testcases_expected"], strict=False),
         )
 
-        formatted_code = black.format_str(code, mode=self.black_mode)
+        try:
+            formatted_code = black.format_str(code, mode=self.black_mode)
+        except black.InvalidInput:
+            print("Black failed to format the code, dumping unformatted code.")
+            formatted_code = code
         path = f"problems/problem_{self.question_frontend_id:04d}/"
         os.makedirs(path, exist_ok=True)
         with open(path + "solution_1.py", "w") as f:
